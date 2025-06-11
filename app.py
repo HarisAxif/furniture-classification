@@ -22,6 +22,7 @@ import os
 import urllib.request
 from tensorflow.keras.models import load_model
 
+model_path = load_model('furniture.h5')
 model_url = 'https://drive.google.com/uc?export=download&id=1lfU7i93OER64RQpxGGpa4ADH2QhY6rbe'
 
 if not os.path.exists(model_path):
@@ -33,7 +34,6 @@ model = load_model(model_path)
 
 
 # Load trained furniture CNN model
-model = load_model('furniture.h5')
 class_names = ['bed', 'chair', 'sofa', 'swivelchair']
 
 def generate_classification_report():
