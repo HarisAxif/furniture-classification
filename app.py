@@ -22,13 +22,15 @@ import os
 import urllib.request
 from tensorflow.keras.models import load_model
 
-model_path = load_model('furniture.h5')
+model_path = 'furniture.h5'
 model_url = 'https://drive.google.com/uc?export=download&id=1lfU7i93OER64RQpxGGpa4ADH2QhY6rbe'
 
+# Only download if the model file is missing
 if not os.path.exists(model_path):
     print("Downloading model from Google Drive...")
     urllib.request.urlretrieve(model_url, model_path)
 
+# Now load the model
 model = load_model(model_path)
 
 
