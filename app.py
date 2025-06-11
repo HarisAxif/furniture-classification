@@ -18,6 +18,20 @@ UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+import os
+import urllib.request
+from tensorflow.keras.models import load_model
+
+model_url = 'https://drive.google.com/uc?export=download&id=1lfU7i93OER64RQpxGGpa4ADH2QhY6rbe'
+
+if not os.path.exists(model_path):
+    print("Downloading model from Google Drive...")
+    urllib.request.urlretrieve(model_url, model_path)
+
+model = load_model(model_path)
+
+
+
 # Load trained furniture CNN model
 model = load_model('furniture.h5')
 class_names = ['bed', 'chair', 'sofa', 'swivelchair']
