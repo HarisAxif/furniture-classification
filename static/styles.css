@@ -1,0 +1,355 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #121212;
+    color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Styles */
+header .navbar {
+    background: #1f1f1f;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    color: #f1c40f;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #ffffffaa;
+    font-weight: 500;
+}
+
+.navbar a:hover {
+    color: #ffffff;
+}
+
+/* Main Content */
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.hero-section p {
+    color: #cccccc;
+    font-size: 1.1rem;
+}
+
+/* Form Styles */
+form#upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+form input[type="file"] {
+    padding: 10px;
+    background: #1f1f1f;
+    color: #ccc;
+    border: 1px dashed #555;
+    border-radius: 6px;
+}
+
+form button {
+    background: #f1c40f;
+    color: #000;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #f39c12;
+}
+
+/* Results Section */
+#result-section {
+    margin-top: 30px;
+}
+
+.result-card {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+#uploaded-image {
+    max-width: 200px;
+    border-radius: 12px;
+    border: 2px solid #f1c40f;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.prediction-info h2 {
+    font-size: 2rem;
+    color: #2ecc71;
+}
+
+.prediction-info p {
+    font-size: 1.1rem;
+    color: #aaa;
+}
+
+/* Probabilities List */
+.class-probabilities {
+    background: #1f1f1f;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.class-probabilities h3 {
+    color: #74b9ff;
+    margin-bottom: 10px;
+}
+
+.class-probabilities ul {
+    list-style: none;
+}
+
+.class-probabilities li {
+    margin: 6px 0;
+    font-size: 1rem;
+}
+
+/* Charts Section */
+.charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.chart-card {
+    background: #222;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.chart-card h4 {
+    margin-bottom: 10px;
+    color: #f1c40f;
+}
+
+/* Classification Report Styles */
+.report-section {
+    background: #1f1f1f;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.report-section h3 {
+    color: #f1c40f;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.report-table-container {
+    overflow-x: auto;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: monospace;
+    margin: 0 auto;
+}
+
+.report-table th {
+    background: #f1c40f;
+    color: #000;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.report-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #444;
+    text-align: center;
+    color: #ddd;
+}
+
+.report-table tr:nth-child(even) {
+    background-color: #333;
+}
+
+.report-table tr:hover {
+    background-color: #3a3a3a;
+}
+
+.report-table tr.highlight {
+    background-color: #34495e;
+    color: #f1c40f;
+    font-weight: bold;
+}
+
+.report-table tr.highlight td {
+    color: #f1c40f;
+}
+
+/* Score coloring */
+.report-table td:nth-child(2),
+.report-table td:nth-child(3),
+.report-table td:nth-child(4) {
+    color: #2ecc71;
+}
+
+.report-table td:nth-child(2).low-score,
+.report-table td:nth-child(3).low-score,
+.report-table td:nth-child(4).low-score {
+    color: #e74c3c;
+}
+
+/* Confusion Matrix Styles */
+.confusion-matrix-section {
+    background: #1f1f1f;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.confusion-matrix-section h3 {
+    color: #f1c40f;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.matrix-container {
+    overflow-x: auto;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.confusion-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    background: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.confusion-matrix th {
+    background: #f1c40f;
+    color: #000;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.confusion-matrix td {
+    padding: 12px 15px;
+    text-align: center;
+    color: #ddd;
+    border: 1px solid #444;
+}
+
+.confusion-matrix tr:nth-child(even) {
+    background-color: #333;
+}
+
+.confusion-matrix td.highlight {
+    background-color: #27ae60;
+    color: white;
+    font-weight: bold;
+}
+
+.confusion-matrix thead tr:first-child th:first-child {
+    background: #34495e;
+    color: #f1c40f;
+}
+
+/* Footer */
+footer {
+    background: #1e1e1e;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .result-card {
+        flex-direction: column;
+    }
+    
+    .report-table th, 
+    .report-table td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    .confusion-matrix th,
+    .confusion-matrix td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Only reduce Pie Chart size */
+#pieChart {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 0 auto;
+    display: block;
+}

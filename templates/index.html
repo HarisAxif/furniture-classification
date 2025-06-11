@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Furniture Classifier</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <div class="logo">Furniture AI</div>
+        <nav>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">How it works</a></li>
+            <li><a href="#">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <section class="hero-section">
+        <h1>Smart Furniture Image Classifier</h1>
+        <p>Upload a furniture image and let AI classify it for you!</p>
+      </section>
+
+      <form id="upload-form" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <button type="submit">Classify Image</button>
+      </form>
+
+      {% if filename %}
+      <section id="result-section">
+        <div class="result-card">
+          <img
+            id="uploaded-image"
+            src="{{ url_for('static', filename='uploads/' ~ filename) }}"
+            alt="Uploaded Image"
+          />
+          <div class="prediction-info">
+            <h2>{{ result.label }}</h2>
+            <p>Confidence: {{ result.confidence }}</p>
+          </div>
+        </div>
+
+        <div class="class-probabilities">
+          <h3>Class Probabilities</h3>
+          <ul>
+            {% for i in range(class_names|length) %}
+            <li>
+              <strong>{{ class_names[i] }}:</strong> {{ result.percentages[i]
+              }}%
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <section class="charts-container">
+          <div class="chart-card">
+            <h4>Bar Chart</h4>
+            <canvas id="barChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h4>Pie Chart</h4>
+            <canvas id="pieChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h4>Line Chart</h4>
+            <canvas id="lineChart"></canvas>
+          </div>
+        </section>
+
+        {% if report_data %}
+        <section class="report-section">
+          <h3>📋 Classification Report</h3>
+          <div class="report-table-container">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Precision</th>
+                  <th>Recall</th>
+                  <th>F1-Score</th>
+                  <th>Support</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in range(report_data.metrics|length) %}
+                <tr
+                  class="{{ 'highlight' if report_data.metrics[i] in ['accuracy', 'macro avg', 'weighted avg'] else '' }}"
+                >
+                  <td>{{ report_data.metrics[i] }}</td>
+                  <td>{{ "%.2f"|format(report_data.precision[i]) }}</td>
+                  <td>{{ "%.2f"|format(report_data.recall[i]) }}</td>
+                  <td>{{ "%.2f"|format(report_data['f1-score'][i]) }}</td>
+                  <td>{{ report_data.support[i] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        {% endif %} {% if confusion_matrix %}
+        <section class="confusion-matrix-section">
+          <h3>📊 Confusion Matrix</h3>
+          <div class="matrix-container">
+            <table class="confusion-matrix">
+              <thead>
+                <tr>
+                  <th>Actual \ Predicted</th>
+                  {% for class_name in confusion_matrix.class_names %}
+                  <th>{{ class_name }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in range(confusion_matrix.class_names|length) %}
+                <tr>
+                  <td>
+                    <strong>{{ confusion_matrix.class_names[i] }}</strong>
+                  </td>
+                  {% for value in confusion_matrix.matrix[i] %}
+                  <td class="{{ 'highlight' if loop.index0 == i else '' }}">
+                    {{ value }}
+                  </td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        {% endif %}
+      </section>
+      {% endif %}
+    </main>
+
+    <footer>&copy; 2025 Furniture Classifier | AI by Team Visionary</footer>
+
+    {% if result %}
+    <script>
+      const classNames = {{ class_names | tojson }};
+      const percentages = {{ result.percentages | tojson }};
+
+      const commonOptions = {
+          responsive: true,
+          animation: false,
+          plugins: {
+              legend: { display: true, labels: { color: 'white' } }
+          },
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  max: 100,
+                  ticks: { color: 'white' }
+              },
+              x: {
+                  ticks: { color: 'white' }
+              }
+          }
+      };
+
+      new Chart(document.getElementById('barChart'), {
+          type: 'bar',
+          data: {
+              labels: classNames,
+              datasets: [{
+                  label: 'Prediction %',
+                  data: percentages,
+                  backgroundColor: ['#e74c3c', '#f39c12', '#27ae60', '#2980b9', '#9b59b6']
+              }]
+          },
+          options: commonOptions
+      });
+
+      new Chart(document.getElementById('pieChart'), {
+          type: 'pie',
+          data: {
+              labels: classNames,
+              datasets: [{
+                  label: 'Prediction %',
+                  data: percentages,
+                  backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff']
+              }]
+          },
+          options: { responsive: true, animation: false }
+      });
+
+      new Chart(document.getElementById('lineChart'), {
+          type: 'line',
+          data: {
+              labels: classNames,
+              datasets: [{
+                  label: 'Prediction %',
+                  data: percentages,
+                  borderColor: '#00cec9',
+                  backgroundColor: '#00cec9',
+                  fill: false,
+                  tension: 0.4
+              }]
+          },
+          options: commonOptions
+      });
+    </script>
+    {% endif %}
+  </body>
+</html>
