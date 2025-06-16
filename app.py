@@ -11,12 +11,16 @@ from werkzeug.utils import secure_filename
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from sklearn.metrics import classification_report
+from fastapi import FastAPI
 
 # Initialize Flask app
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Initialize FastAPI
+app = FastAPI()
 
 import os
 import urllib.request
@@ -129,9 +133,9 @@ def index():
         confusion_matrix=confusion_matrix
     )
 
-@app.route('/')
-def home():
-    return "Hello from Hugging Face!"
+@app.get("/")
+def greet_json():
+    return {"Hello": "World!"}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7860, debug=True)
